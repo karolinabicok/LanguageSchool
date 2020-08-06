@@ -5,7 +5,7 @@ from Course import Course
 
 def check_date_format(date):
     try:
-        datetime.datetime.strptime(date, "dd.MM.yyyy.")
+        datetime.datetime.strptime(date, "dd/MM/yyyy")
         return True
     except:
         print("Uneti datum nije validan.")
@@ -14,7 +14,7 @@ def check_date_format(date):
 
 def input_date():
     while True:
-        date = input("Upisite datum koji zelite da zakazete: ")
+        date = input("Upisite datum: ")
         if check_date_format(date):
             return date
 

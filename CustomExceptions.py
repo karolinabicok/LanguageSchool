@@ -6,3 +6,6 @@ class AppointmentNotAvailableException(Exception):
 
 class NoSuchTitleException(Exception):
     pass
+
+class NoEnoughFundsException(Exception):
+    pass

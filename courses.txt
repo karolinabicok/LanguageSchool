@@ -1,12 +1,12 @@
 Beginner A1|8
-Elementary English A2|10
-Intermediate English B1|12
+Elementary A2|10
+Intermediate B1|12
 Upper-Intermediate B2|14
-Advanced English C1|16
+Advanced C1|16
 Proficiency C2|18
 IELTS/TOEFL Tests|20
-Aviation English course|30
-Tourism English course|30
-Medical English course|30
-Business English course|30
+Aviation course|30
+Tourism course|30
+Medical course|30
+Business course|30
 Conversational course|20

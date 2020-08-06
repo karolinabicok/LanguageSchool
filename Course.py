@@ -14,7 +14,7 @@ class Course(object):
 
     @classmethod
     def load(cls):
-        file = open("couurses.txt", "r")
+        file = open("courses.txt", "r")
         for line in file:
             attributes = line.strip().split("|")
             c = Course(title=attributes[0],
