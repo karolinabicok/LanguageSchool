@@ -1,14 +1,12 @@
 from Course import Course
-from CustomExceptions import AppointmentNotAvailableException, NoEnoughFundsException
-from Teacher import Teacher
+from CustomExceptions import AppointmentNotAvailableException, AppointmentNotFoundException
 from Student import Student
-import formatting
-
-from input_check import input_date, input_time_num
+from Teacher import Teacher
 
 
 class Appointment:
     calendar = {}
+    finished_appointments = []
 
     def __init__(self, date, time_num, teacher, student, course, price):
         self.date = date
@@ -22,18 +20,23 @@ class Appointment:
     def load(cls):
         file = open("appointments.txt", "r")
         for line in file:
-            attributes = line.strip().split("|")
-            a = Appointment(
-                date=attributes[0],
-                time_num=int(attributes[1]),
-                teacher=Teacher.get_by_username(attributes[2]),
-                student=Student.get_by_username(attributes[3]),
-                course=Course.get_by_title(attributes[4]),
-                price=int(attributes[5])
-            )
+            a = cls.get_attributes_from_line(line)
             cls.add_to_calendar(a)
 
         file.close()
+
+    @classmethod
+    def get_attributes_from_line(cls, line):
+        attributes = line.strip().split("|")
+        a = Appointment(
+            date=attributes[0],
+            time_num=int(attributes[1]),
+            teacher=Teacher.get_by_username(attributes[2]),
+            student=Student.get_by_username(attributes[3]),
+            course=Course.get_by_title(attributes[4]),
+            price=int(attributes[5])
+        )
+        return a
 
     @classmethod
     def add_to_calendar(cls, a):
@@ -62,20 +65,21 @@ class Appointment:
 
     @classmethod
     def schedule_appointment(cls, date, time_num, student, course):
-        today = formatting.date_formatted(formatting.today_date_str_formatted())
-        date = formatting.date_formatted(date)
 
-        if today <= date and cls.is_appointment_available(date, time_num) and student.funds >= course.price:
+        if cls.is_appointment_available(date, time_num) and student.funds >= course.price:
             cls.calendar[date][time_num] = Appointment(date, time_num, student.teacher, student, course,
-                                                               course.price)
+                                                       course.price)
         else:
-            raise AppointmentNotAvailableException("Uneti datum nije validan.")
+            raise AppointmentNotAvailableException("Termin za uneti datum i vreme nije slobodan.")
 
     @classmethod
     def is_appointment_available(cls, date, time_num):
         if time_num in cls.calendar[date].keys():
             return False
         return True
+
+    def remove_appointment(self):
+        del self.calendar[self.date][self.time_num]
 
     @classmethod
     def get_all_appointments_for_student(cls, student):
@@ -97,55 +101,27 @@ class Appointment:
 
         for date in cls.calendar.keys():
             for time_num in cls.calendar[date].keys():
-                a = cls.calendar[date][time_num]
-                if a.teacher == teacher:
-                    appointment_list.append(a)
+                appointment = cls.calendar[date][time_num]
+                if appointment.teacher == teacher:
+                    appointment_list.append(appointment)
 
         return appointment_list
 
     @classmethod
-    def cancel_appointment(cls, student_username, date, time_num):
-        if date in cls.calendar.keys() and time_num in cls.calendar[date].keys():
-            if cls.calendar[date][time_num].student.username == student_username:
-                cls.calendar[date][time_num].remove_appointment()
-                print("Uspesno otkazan cas.")
-
-    @classmethod
     def get_finished_appointments_list(cls):
-        finished_a = []
         file = open("finished_appointments", "r")
         for line in file:
-            attributes = line.strip().split("|")
-            a = Appointment(
-                date=attributes[0],
-                time_num=int(attributes[1]),
-                teacher=Teacher.get_by_username(attributes[2]),
-                student=Student.get_by_username(attributes[3]),
-                course=Course.get_by_title(attributes[4]),
-                price=int(attributes[5])
-            )
-            finished_a.append(a)
+            a = cls.get_attributes_from_line(line)
+            cls.finished_appointments.append(a)
         file.close()
-        return finished_a
+        return cls.finished_appointments
 
     @classmethod
     def get_appointment(cls, date, time_num):
         if date in cls.calendar.keys() and time_num in cls.calendar[date].keys():
             return cls.calendar[date][time_num]
         else:
-            return None
-
-    @classmethod
-    def finish_appointment(cls):
-        finished_a = cls.get_finished_appointments_list()
-
-        today_date = formatting.today_date_str_formatted()
-        appointment_date = input_date()
-
-        time_num = input_time_num()
-        if today_date == appointment_date:
-            appointment = Appointment.get_appointment(appointment_date, time_num)
-            finished_a.append(appointment)
+            raise AppointmentNotFoundException("Termin ne postoji.")
 
     @classmethod
     def save_finished_appointments(cls):
@@ -157,5 +133,3 @@ class Appointment:
                    f"{appointment.student.username}|{appointment.course.title}|{appointment.price}\n"
             file.write(line)
         file.close()
-
-

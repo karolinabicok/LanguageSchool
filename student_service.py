@@ -25,9 +25,10 @@ class StudentService(object):
 
             try:
                 Appointment.schedule_appointment(date, time_num, student, course)
+                Appointment.save()
                 print("Uspesno zakazan termin. ")
             except AppointmentNotAvailableException:
-                print("Termin koji ste odabrali je zauzet.")
+                print("Odabrani termin je zauzet.")
 
     def print_courses(self):
         print("Kursevi u ponudi: ")
@@ -60,16 +61,17 @@ class StudentService(object):
         while True:
             date = input_date()
             time_num = input_time_num()
-            for a in appointments:
-                if a.date == date and a.time_num == time_num:
-                    a.remove_appointment()
+            for appointment in appointments:
+                if appointment.date == date and appointment.time_num == time_num:
+                    appointment.remove_appointment()
                     print("Uspesno otkazan termin.")
+                    Appointment.save()
                     return
 
     def view_price_list(self):
         courses = Course.get_course_list()
-        for c in courses:
-            print(str(c))
+        for course in courses:
+            print(str(course) + "€")
 
     def view_schedules(self, student):
         appointments = Appointment.get_all_appointments_for_student(student)
@@ -77,8 +79,17 @@ class StudentService(object):
         print("Zakazani termini:")
         for a in appointments:
             print(
-                f"{a.date} {self.get_time_num_dict()[a.time_num]} {a.teacher.f_name} {a.teacher.l_name} {a.course.title}")
+                f"{a.date} {self.get_time_num_dict()[a.time_num]} {a.teacher.f_name}"
+                f" {a.teacher.l_name} {a.course.title}")
         return appointments
+
+    def leave_school(self, student):
+        for date in Appointment.calendar.keys():
+            for time_num in Appointment.calendar[date].keys():
+                if Appointment.calendar[date][time_num].student == student:
+                    del Appointment.calendar[date][time_num]
+                    Appointment.save()
+        del student
 
     def change_language(self):
         pass

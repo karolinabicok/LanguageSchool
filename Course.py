@@ -2,7 +2,6 @@ from CustomExceptions import NoSuchTitleException
 
 
 class Course(object):
-
     course_list = []
 
     def __init__(self, title, price):
@@ -17,9 +16,7 @@ class Course(object):
         file = open("courses.txt", "r")
         for line in file:
             attributes = line.strip().split("|")
-            c = Course(title=attributes[0],
-                        price=int(attributes[1])
-                        )
+            c = Course(title=attributes[0], price=int(attributes[1]))
             cls.course_list.append(c)
         file.close()
 
@@ -35,3 +32,6 @@ class Course(object):
     def get_course_list(cls):
         return cls.course_list
 
+    @classmethod
+    def add_new_course(cls, title, price):
+        cls.course_list.append(Course(title, price))

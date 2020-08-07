@@ -1,4 +1,3 @@
-from Appointment import Appointment
 from CustomExceptions import NoSuchUsernameException
 from Teacher import Teacher
 
@@ -45,17 +44,10 @@ class Student(object):
 
     @classmethod
     def get_by_username(cls, username):
-        for s in cls.student_list:
-            if s.username == username:
-                return s
+        for student in cls.student_list:
+            if student.username == username:
+                return student
         else:
             raise NoSuchUsernameException("Korisnicko ime ne postoji.")
 
-    @classmethod
-    def leave_school(cls, student):
-        for date in Appointment.calendar.keys():
-            for time_num in Appointment.calendar[date].keys():
-                if Appointment.calendar[date][time_num].student == student:
-                    del Appointment.calendar[date][time_num]
-        del student
 

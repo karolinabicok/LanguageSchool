@@ -1,4 +1,3 @@
-import datetime
 from CustomExceptions import NoSuchUsernameException
 
 
@@ -44,17 +43,3 @@ class Teacher(object):
                 return t
         else:
             raise NoSuchUsernameException("Korisnicko ime ne postoji.")
-
-    @classmethod
-    def today_earnings(cls):
-        today_date = str(datetime.datetime.today())
-        file = open("finished_appointments.txt", "r")
-        earnings = 0
-        for line in file:
-            attributes = line.strip().split("|")
-            if today_date == attributes[0]:
-                for teacher in cls.teacher_list:
-                    if teacher.username == attributes[2]:
-                        earnings += int(attributes[5])
-        file.close()
-        return earnings

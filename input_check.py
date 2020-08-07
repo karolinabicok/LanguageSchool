@@ -1,5 +1,6 @@
 import datetime
 
+import formatting
 from Course import Course
 
 
@@ -15,19 +16,20 @@ def check_date_format(date):
 def input_date():
     while True:
         date = input("Upisite datum: ")
-        if check_date_format(date):
+        date = formatting.date_formatted(date)
+        today = formatting.date_formatted(formatting.today_date_str_formatted())
+
+        if check_date_format(date) and today <= date:
             return date
 
 
 def input_time_num():
     while True:
-        try:
-            time_num = int(input("Upisite broj: "))
-            if time_num in range(0, 8):
-                return time_num
-            else:
-                print("Uneta vrednost mora biti broj od 0 do 7.")
-        except:
+
+        time_num = int(input("Upisite broj: "))
+        if time_num in range(0, 8):
+            return time_num
+        else:
             print("Uneta vrednost mora biti broj od 0 do 7.")
 
 
@@ -39,4 +41,3 @@ def input_course():
                 return course
         else:
             print("Naziv kursa nije validan. ")
-
