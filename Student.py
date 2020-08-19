@@ -50,4 +50,18 @@ class Student(object):
         else:
             raise NoSuchUsernameException("Korisnicko ime ne postoji.")
 
+    @classmethod
+    def login(cls, username, password):
+        for s in cls.student_list:
+            if s.username == username and s.password == password:
+                return True
+        else:
+            return False
 
+    @classmethod
+    def check_username(cls, username):
+        for student in cls.student_list:
+            if student.username == username:
+                return True
+        else:
+            return False

@@ -91,8 +91,5 @@ class StudentService(object):
                     Appointment.save()
         del student
 
-    def change_language(self):
-        pass
-
     def change_teacher(self):
         pass

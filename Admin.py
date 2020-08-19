@@ -34,3 +34,11 @@ class Admin:
             line = f"{admin.username}|{admin.password}\n"
             file.write(line)
         file.close()
+
+    @classmethod
+    def login(cls, username, password):
+        for a in cls.admins:
+            if a.username == username and a.password == password:
+                return True
+        else:
+            return False

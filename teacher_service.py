@@ -1,6 +1,8 @@
 import formatting
 from Appointment import Appointment
+from Teacher import Teacher
 from input_check import input_date, input_time_num
+import matplotlib.pyplot as plt
 
 
 class TeacherService(object):
@@ -73,3 +75,35 @@ class TeacherService(object):
             Appointment.save_finished_appointments()
         else:
             print("Termin sa unetim datumom i vremenom nije zakazan.")
+
+    def todays_earnings_graph(self):
+        teachers_and_earnings = {}
+        file = open("finished_appointments.txt", "r")
+
+        for line in file:
+            attributes = Appointment.get_attributes_from_line(line)
+            if attributes[2] not in teachers_and_earnings.keys():
+                teachers_and_earnings[attributes[2]] = self.today_earnings(attributes[2])
+
+        for teacher in teachers_and_earnings.keys():
+            t = Teacher.get_by_username(teacher)
+            name = t.f_name + " " + t.l_name
+            teachers_and_earnings[name] = teachers_and_earnings.pop(teacher)
+
+        self.plot_graph(teachers_and_earnings)
+        file.close()
+
+    def plot_graph(self, teachers_and_earnings):
+        sorted_earnings = sorted(teachers_and_earnings.items(), key=lambda x: x[1])
+        x_data = []
+        y_data = []
+        for i in sorted_earnings:
+            x_data.append(sorted_earnings[0])
+            y_data.append(sorted_earnings[1])
+        plt.title("Today's earnings by teacher")
+        plt.bar(x_data, y_data)
+        plt.xlabel('Teachers')
+        plt.xticks(rotation=90)
+        plt.ylabel('Earnings')
+        plt.ylim(ymin=0, ymax=300)
+        plt.show()

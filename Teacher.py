@@ -43,3 +43,35 @@ class Teacher(object):
                 return t
         else:
             raise NoSuchUsernameException("Korisnicko ime ne postoji.")
+
+    @classmethod
+    def login(cls, username, password):
+        for t in cls.teacher_list:
+            if t.username == username and t.password == password:
+                return True
+        else:
+            return False
+
+    @classmethod
+    def get_languages_list(cls):
+        languages = []
+
+        for t in cls.teacher_list:
+            languages.append(t.language)
+
+        languages = list(dict.fromkeys(languages))
+
+        return languages
+
+    @classmethod
+    def print_teachers_and_languages(cls):
+        for t in cls.teacher_list:
+            print(t.username + " | " + t.language)
+
+    @classmethod
+    def teacher_in_list(cls, username):
+        for t in cls.teacher_list:
+            if t.username == username:
+                return True
+        else:
+            return False
