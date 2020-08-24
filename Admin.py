@@ -10,14 +10,6 @@ class Admin:
         self.password = password
 
     @classmethod
-    def register_teacher(cls, f_name, l_name, language, t_username, t_password):
-        Teacher.register(f_name, l_name, language, t_username, t_password)
-
-    @classmethod
-    def add_course(cls, title, price):
-        Course.add_new_course(title, price)
-
-    @classmethod
     def load(cls):
         file = open("admins.txt", "r")
         for line in file:
@@ -39,6 +31,14 @@ class Admin:
     def login(cls, username, password):
         for a in cls.admins:
             if a.username == username and a.password == password:
+                return True
+        else:
+            return False
+
+    @classmethod
+    def admin_in_list(cls, username):
+        for a in cls.admins:
+            if a.username == username:
                 return True
         else:
             return False

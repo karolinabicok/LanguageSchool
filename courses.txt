@@ -10,3 +10,5 @@ Tourism course|30
 Medical course|30
 Business course|30
 Conversational course|20
+IT course|30
+History course|30

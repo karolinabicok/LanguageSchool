@@ -1,1 +1,2 @@
-29/07/2020|3|anap|jocap|Beginner A1|8
+2020-11-11|3|ivanb|pekip|Medical course|30
+2020-11-11|1|ivanb|jovic|Advanced C1|16

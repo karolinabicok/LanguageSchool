@@ -1,1 +1,8 @@
-29/07/2020|3|anap|jocap|Beginner A1|8
+2020-08-23|6|anap|pekip|Medical course|30
+2020-08-23|5|julia|anap|IELTS/TOEFL Tests|20
+2020-08-23|3|ivanb|jovic|Intermediate B1|12
+2020-08-23|2|ivanb|jovic|Aviation course|30
+2020-08-23|0|lekic|anaz|IT course|30
+2020-08-23|7|lekic|marinat|Upper-Intermediate B2|14
+2020-08-23|1|milor|marinat|Advanced C1|16
+2020-08-23|4|jstankovic|lukan|Proficiency C2|18

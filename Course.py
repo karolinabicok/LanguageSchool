@@ -1,7 +1,7 @@
 from CustomExceptions import NoSuchTitleException
 
 
-class Course(object):
+class Course:
     course_list = []
 
     def __init__(self, title, price):
@@ -26,7 +26,7 @@ class Course(object):
             if title == c.title:
                 return c
         else:
-            raise NoSuchTitleException("Ne postoji kurs sa datim imenom.")
+            raise NoSuchTitleException("Course with entered title doesn't exist.")
 
     @classmethod
     def get_course_list(cls):
@@ -35,3 +35,11 @@ class Course(object):
     @classmethod
     def add_new_course(cls, title, price):
         cls.course_list.append(Course(title, price))
+
+    @classmethod
+    def save(cls):
+        file = open("courses.txt", "w")
+        for course in cls.course_list:
+            line = course.title + "|" + str(course.price) + "\n"
+            file.write(line)
+        file.close()

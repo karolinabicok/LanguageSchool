@@ -1,7 +1,7 @@
 from CustomExceptions import NoSuchUsernameException
 
 
-class Teacher(object):
+class Teacher:
     teacher_list = []
 
     def __init__(self, f_name, l_name, language, username, password):
@@ -42,7 +42,7 @@ class Teacher(object):
             if t.username == username:
                 return t
         else:
-            raise NoSuchUsernameException("Korisnicko ime ne postoji.")
+            raise NoSuchUsernameException("Username doesn't exist.")
 
     @classmethod
     def login(cls, username, password):
@@ -75,3 +75,11 @@ class Teacher(object):
                 return True
         else:
             return False
+
+    @classmethod
+    def teachers_by_language(cls, language):
+        t_list = []
+        for teacher in Teacher.teacher_list:
+            if teacher.language == language:
+                t_list.append(teacher.username)
+        return t_list

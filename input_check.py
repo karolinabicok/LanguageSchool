@@ -1,43 +1,44 @@
 import datetime
-
-import formatting
 from Course import Course
+from CustomExceptions import NoSuchTitleException
 
 
 def check_date_format(date):
     try:
-        datetime.datetime.strptime(date, "dd/MM/yyyy")
+        datetime.datetime.strptime(date, "%Y-%m-%d")
         return True
     except:
-        print("Uneti datum nije validan.")
+        print("Entered date is invalid.")
         return False
 
 
 def input_date():
     while True:
-        date = input("Upisite datum: ")
-        date = formatting.date_formatted(date)
-        today = formatting.date_formatted(formatting.today_date_str_formatted())
+        date = input("\nEnter the date of yyyy-mm-dd format or x to quit: ")
 
-        if check_date_format(date) and today <= date:
+        if check_date_format(date) or date == 'x':
             return date
 
 
 def input_time_num():
     while True:
 
-        time_num = int(input("Upisite broj: "))
+        time_num = input("\nEnter the time number [0-7] or x to quit: ")
+        if time_num == 'x':
+            return time_num
+
+        time_num = int(time_num)
         if time_num in range(0, 8):
             return time_num
         else:
-            print("Uneta vrednost mora biti broj od 0 do 7.")
+            print("Entered value must be in range [0-7].\n")
 
 
 def input_course():
     while True:
-        title = input("Unesite naziv kursa: ")
-        for course in Course.course_list:
-            if course.title == title:
-                return course
-        else:
-            print("Naziv kursa nije validan. ")
+        try:
+            title = input("\nEnter the course name: ")
+            course = Course.get_by_title(title)
+            return course
+        except NoSuchTitleException:
+            print("Course name is invalid. ")
