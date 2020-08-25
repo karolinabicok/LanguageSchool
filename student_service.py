@@ -6,10 +6,8 @@ from Teacher import Teacher
 from input_check import input_date, input_time_num, input_course
 
 
-class StudentService(object):
-
+class StudentService:
     def schedule_appointment(self, student):
-
         while True:
             date = input_date()
             if date == 'x':
@@ -64,7 +62,6 @@ class StudentService(object):
         return time_num_dict
 
     def cancel_appointment(self, student):
-
         print("Appointments that can be canceled:")
         appointments = self.view_schedules(student)
 
@@ -73,15 +70,17 @@ class StudentService(object):
             return
         else:
             print("Select the date and time of the appointment you want to cancel: ")
-
             time_num_dict = self.get_time_num_dict()
 
             for time_num in time_num_dict:
                 print(time_num, ":", time_num_dict[time_num])
 
             date = input_date()
+            if date == 'x':
+                return
             time_num = input_time_num()
-
+            if time_num == 'x':
+                return
             for appointment in appointments:
                 if appointment.date == date:
                     while appointment.time_num != time_num:
@@ -91,7 +90,6 @@ class StudentService(object):
                     print("Successfully canceled appointment.")
                     Appointment.save()
                     return
-
             else:
                 print("Appointment not found.")
                 return
@@ -111,7 +109,7 @@ class StudentService(object):
             for time_num in list(Appointment.calendar[date].keys()):
                 if Appointment.calendar[date][time_num].student == student:
                     del Appointment.calendar[date][time_num]
-                    Appointment.save()
+        Appointment.save()
         Student.student_list.remove(student)
         Student.save()
         print("Success.")

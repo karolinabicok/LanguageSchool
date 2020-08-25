@@ -12,3 +12,4 @@ Business course|30
 Conversational course|20
 IT course|30
 History course|30
+Biology course|30

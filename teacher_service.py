@@ -5,7 +5,7 @@ from input_check import input_date, input_time_num
 import matplotlib.pyplot as plt
 
 
-class TeacherService(object):
+class TeacherService:
     def get_time_num_dict(self):
         time_num_dict = {0: "9:00",
                          1: "10:00",
@@ -46,23 +46,18 @@ class TeacherService(object):
         return appointments
 
     def cancel_appointment(self, teacher):
-
         appointments = self.view_schedules(teacher)
-
         if not appointments:
             return
 
         else:
             print("Select the date and time of the appointment you want to cancel: ")
-
             time_num_dict = self.get_time_num_dict()
-
             for time_num in time_num_dict:
                 print(time_num, ":", time_num_dict[time_num])
 
             date = input_date()
             time_num = input_time_num()
-
             if date == 'x' or time_num == 'x':
                 return
 
@@ -81,18 +76,13 @@ class TeacherService(object):
                 return
 
     def finish_appointment(self, teacher):
-
         appointments = self.view_schedules(teacher)
-
         time_num_dict = self.get_time_num_dict()
-
         for time_num in time_num_dict:
             print(time_num, ":", time_num_dict[time_num])
-
         time_num = input_time_num()
         if time_num == 'x':
             return
-
         today_date = str(dt.today())
         a_in_list = False
 
@@ -106,22 +96,15 @@ class TeacherService(object):
             if appointment.student.funds < appointment.price:
                 print("No enough funds to finish an appointment.")
                 return
-
             else:
                 print("Appointment finished.")
-
                 appointment.student.funds = appointment.student.funds - appointment.price
-
                 Student.save()
-
                 Appointment.finished_appointments.append(appointment)
 
                 Appointment.remove_appointment(appointment.date, appointment.time_num)
-
                 Appointment.save()
-
                 Appointment.save_finished_appointments()
-
         else:
             print("Appointment at that time is not scheduled.")
 
@@ -157,7 +140,7 @@ class TeacherService(object):
         plt.xlabel('Teachers')
         plt.xticks(rotation=30)
         plt.ylabel('Earnings')
-        plt.ylim(ymin=0, ymax=100)
+        plt.ylim(ymin=0, ymax=240)
         plt.show()
 
     def print_teacher_services(self):

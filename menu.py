@@ -71,10 +71,8 @@ def login(num):
             else:
                 print("Incorrect username or password.")
             break
-
         if login_type == 'x':
             return
-
     else:
         return
 
